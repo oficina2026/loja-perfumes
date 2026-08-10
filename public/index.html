@@ -18,98 +18,114 @@
   </script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #fdfcfb; }
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #fdfcfb; scroll-behavior: smooth; }
     .font-serif { font-family: 'Playfair Display', serif; }
-    .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
   </style>
 </head>
 <body>
   <div id="root"></div>
+
   <script type="text/babel" data-type="module" data-presets="react">
     import React, { useState, useEffect } from "react";
     import { createRoot } from "react-dom/client";
     import * as Lucide from "lucide-react";
 
-    const { ShoppingBag, MessageCircle, MapPin, Phone, Settings, LogOut, Plus, Trash2, Edit, Save, X, ChevronRight, Image: ImageIcon, Lock } = Lucide;
+    const { MessageCircle, ShoppingBag, Lock, Settings, ChevronRight, MapPin, Phone } = Lucide;
 
     function App() {
-      // Configurações e Produtos Iniciais
-      const settings = {
+      const [view, setView] = useState("home");
+      const [settings, setSettings] = useState({
         store_name: "Essence Perfumaria",
-        hero_title: "A essência da sua personalidade",
-        hero_subtitle: "Descubra fragrâncias exclusivas que capturam momentos e eternizam memórias.",
         store_whatsapp: "5531996831731",
         store_address: "Belo Horizonte, MG",
+        hero_title: "A essência da sua personalidade",
+        hero_subtitle: "Fragrâncias exclusivas que capturam momentos e eternizam memórias.",
         store_hero: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1600"
-      };
+      });
 
       const products = [
-        { id: '1', name: 'Blue Velvet', description: 'Fragrância marcante e fresca para o dia a dia.', price: 'R$ 380,00', image_url: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600' },
-        { id: '2', name: 'Rose d\'Or', description: 'Delicadeza das rosas combinada com o toque do âmbar.', price: 'R$ 420,00', image_url: 'https://images.unsplash.com/photo-1585120040315-2241b774ad0f?w=600' },
-        { id: '3', name: 'Oud Imperial', description: 'Amadeirado intenso e luxuoso para noites especiais.', price: 'R$ 550,00', image_url: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600' }
+        { id: '1', name: 'Blue Velvet', description: 'Fragrância marcante e fresca.', price: 'R$ 380,00', image_url: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600' },
+        { id: '2', name: 'Rose d\'Or', description: 'Delicadeza das rosas e âmbar.', price: 'R$ 420,00', image_url: 'https://images.unsplash.com/photo-1585120040315-2241b774ad0f?w=600' }
       ];
 
       const handleWhatsApp = (p) => {
-        const msg = p ? `Olá! Tenho interesse no perfume *${p.name}*. Pode me ajudar?` : `Olá!`;
+        const msg = p ? `Olá! Tenho interesse no perfume *${p.name}*.` : `Olá! Gostaria de informações.`;
         window.open(`https://wa.me/${settings.store_whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
       };
 
       return (
         <div className="min-h-screen flex flex-col">
-          <header className="sticky top-0 z-50 glass border-b border-stone-100 h-20 flex items-center justify-between px-8">
-            <h1 className="text-2xl font-serif font-bold text-stone-900">{settings.store_name}</h1>
-            <nav className="flex gap-8 text-sm font-medium text-stone-600">
-              <a href="#" className="hover:text-stone-900">Início</a>
-              <a href="#catalogo" className="hover:text-stone-900">Catálogo</a>
-              <a href="https://wa.me/5531996831731" className="text-green-600">Contato</a>
+          {/* HEADER */}
+          <header className="sticky top-0 z-50 glass h-20 flex items-center justify-between px-6 md:px-12">
+            <h1 className="text-2xl font-serif font-bold text-stone-900 cursor-pointer" onClick={() => setView("home")}>{settings.store_name}</h1>
+            <nav className="flex items-center gap-6">
+              <button onClick={() => setView("home")} className="text-sm font-medium hover:text-stone-500">Início</button>
+              <a href="#catalogo" className="text-sm font-medium hover:text-stone-500">Catálogo</a>
+              <button onClick={() => setView("admin")} className="text-stone-300 hover:text-stone-900"><Lock size={18}/></button>
             </nav>
           </header>
-          
-          <main className="flex-grow">
-            <section className="relative h-[70vh] flex items-center justify-center text-center overflow-hidden">
-               <img src={settings.store_hero} className="absolute inset-0 w-full h-full object-cover" />
-               <div className="absolute inset-0 bg-black/20"></div>
-               <div className="relative z-10 bg-white/40 backdrop-blur-md p-10 md:p-16 rounded-3xl border border-white/30 shadow-2xl max-w-3xl mx-4">
-                  <h2 className="text-5xl md:text-7xl font-serif text-stone-900 mb-6 leading-tight">{settings.hero_title}</h2>
-                  <p className="text-lg text-stone-800 mb-10 max-w-lg mx-auto">{settings.hero_subtitle}</p>
-                  <a href="#catalogo" className="bg-stone-900 text-white px-10 py-4 rounded-full font-bold hover:bg-stone-800 transition-all">Explorar Catálogo</a>
-               </div>
-            </section>
 
-            <section id="catalogo" className="py-24 px-8 max-w-7xl mx-auto">
-              <div className="text-center mb-16">
-                <h3 className="text-4xl font-serif text-stone-900 mb-4">Nossa Coleção Premium</h3>
-                <p className="text-stone-500">Fragrâncias selecionadas para momentos inesquecíveis</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                {products.map(p => (
-                  <div key={p.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-xl transition-all">
-                    <div className="aspect-[4/5] overflow-hidden">
-                      <img src={p.image_url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                    <div className="p-6">
-                      <h4 className="text-2xl font-serif text-stone-900 mb-2">{p.name}</h4>
-                      <p className="text-stone-500 text-sm mb-4 h-10 line-clamp-2">{p.description}</p>
-                      <div className="flex items-center justify-between mb-6">
-                        <p className="text-xl font-bold text-stone-900">{p.price}</p>
-                      </div>
-                      <button onClick={() => handleWhatsApp(p)} className="w-full bg-stone-900 text-white py-4 rounded-xl flex items-center justify-center gap-3 font-bold hover:bg-stone-800 transition-colors">
-                        <MessageCircle size={20} className="text-green-400"/> Consultar via WhatsApp
-                      </button>
-                    </div>
+          <main className="flex-grow">
+            {view === "home" ? (
+              <>
+                {/* HERO */}
+                <section className="relative h-[70vh] flex items-center justify-center text-center px-4">
+                  <img src={settings.store_hero} className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="relative z-10 bg-white/40 backdrop-blur-md p-8 md:p-16 rounded-3xl border border-white/30 shadow-2xl max-w-3xl">
+                    <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">{settings.hero_title}</h2>
+                    <p className="text-lg text-stone-800 mb-8">{settings.hero_subtitle}</p>
+                    <a href="#catalogo" className="bg-stone-900 text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 hover:bg-stone-800 transition-all">
+                      Ver Catálogo <ChevronRight size={18}/>
+                    </a>
                   </div>
-                ))}
+                </section>
+
+                {/* CATALOGO */}
+                <section id="catalogo" className="py-20 px-6 max-w-7xl mx-auto">
+                  <h3 className="text-3xl font-serif text-center mb-16 text-stone-900">Nossa Coleção</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    {products.map(p => (
+                      <div key={p.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-xl transition-all group">
+                        <div className="aspect-square overflow-hidden">
+                          <img src={p.image_url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="p-6">
+                          <h4 className="text-2xl font-serif mb-2">{p.name}</h4>
+                          <p className="text-stone-500 text-sm mb-4">{p.description}</p>
+                          <p className="text-xl font-bold mb-6 text-stone-900">{p.price}</p>
+                          <button onClick={() => handleWhatsApp(p)} className="w-full bg-stone-900 text-white py-4 rounded-xl flex items-center justify-center gap-3 font-bold hover:bg-stone-800">
+                            <MessageCircle size={20} className="text-green-400"/> Consultar via WhatsApp
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </>
+            ) : (
+              /* LOGIN ADMIN SIMPLIFICADO PARA O TESTE */
+              <div className="min-h-[60vh] flex items-center justify-center">
+                <div className="bg-white p-8 rounded-3xl shadow-xl border border-stone-100 w-full max-w-md text-center">
+                  <Settings size={48} className="mx-auto mb-6 text-stone-300"/>
+                  <h2 className="text-2xl font-serif mb-4">Acesso Administrativo</h2>
+                  <p className="text-stone-500 mb-6">Para editar fotos e preços, o banco de dados deve estar ativo na Cloudflare Workers.</p>
+                  <button onClick={() => setView("home")} className="text-stone-900 font-bold underline">Voltar para a loja</button>
+                </div>
               </div>
-            </section>
+            )}
           </main>
 
-          <footer className="bg-stone-900 text-white py-16 px-8 text-center">
-            <h4 className="text-2xl font-serif mb-4">{settings.store_name}</h4>
-            <p className="text-stone-400 mb-8 max-w-md mx-auto">{settings.store_address}</p>
-            <div className="flex justify-center gap-6 text-sm text-stone-500">
-              <span>© 2026 Todos os direitos reservados</span>
+          {/* FOOTER */}
+          <footer className="bg-stone-900 text-white py-12 px-6 text-center">
+            <h4 className="text-xl font-serif mb-4">{settings.store_name}</h4>
+            <div className="flex flex-col items-center gap-2 text-stone-400 text-sm mb-8">
+              <span className="flex items-center gap-2"><MapPin size={14}/> {settings.store_address}</span>
+              <span className="flex items-center gap-2"><Phone size={14}/> {settings.store_whatsapp}</span>
             </div>
+            <button onClick={() => setView("admin")} className="text-stone-600 text-xs hover:text-white transition-colors">Acesso Restrito</button>
           </footer>
         </div>
       );
