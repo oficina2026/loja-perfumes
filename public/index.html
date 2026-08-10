@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Essence Perfumaria</title>
+  <title>Essence Perfumaria - Oficial</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="importmap">
   {
@@ -18,86 +18,88 @@
   </script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #fdfcfb; scroll-behavior: smooth; }
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;700&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #fdfcfb; }
     .font-serif { font-family: 'Playfair Display', serif; }
-    .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; color:#666;">
+      Carregando a loja... (Se esta mensagem não sumir, avise o suporte)
+    </div>
+  </div>
 
   <script type="text/babel" data-type="module" data-presets="react">
-    import React, { useState, useEffect } from "react";
+    import React, { useState } from "react";
     import { createRoot } from "react-dom/client";
     import * as Lucide from "lucide-react";
 
-    const { MessageCircle, ShoppingBag, Lock, Settings, ChevronRight, MapPin, Phone } = Lucide;
+    const { MessageCircle, Lock, ChevronRight, MapPin, Phone, Settings } = Lucide;
 
     function App() {
       const [view, setView] = useState("home");
-      const [settings, setSettings] = useState({
+      
+      const settings = {
         store_name: "Essence Perfumaria",
-        store_whatsapp: "5531996831731",
+        store_whatsapp: "5531996831731", // Coloque seu número aqui
         store_address: "Belo Horizonte, MG",
         hero_title: "A essência da sua personalidade",
-        hero_subtitle: "Fragrâncias exclusivas que capturam momentos e eternizam memórias.",
+        hero_subtitle: "Descubra fragrâncias exclusivas que capturam momentos e eternizam memórias.",
         store_hero: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1600"
-      });
+      };
 
       const products = [
-        { id: '1', name: 'Blue Velvet', description: 'Fragrância marcante e fresca.', price: 'R$ 380,00', image_url: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600' },
-        { id: '2', name: 'Rose d\'Or', description: 'Delicadeza das rosas e âmbar.', price: 'R$ 420,00', image_url: 'https://images.unsplash.com/photo-1585120040315-2241b774ad0f?w=600' }
+        { id: '1', name: 'Blue Velvet', price: 'R$ 380,00', desc: 'Fresco e marcante.', img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500' },
+        { id: '2', name: 'Rose d\'Or', price: 'R$ 420,00', desc: 'Rosas e Âmbar.', img: 'https://images.unsplash.com/photo-1585120040315-2241b774ad0f?w=500' }
       ];
 
       const handleWhatsApp = (p) => {
-        const msg = p ? `Olá! Tenho interesse no perfume *${p.name}*.` : `Olá! Gostaria de informações.`;
+        const msg = p ? `Olá! Tenho interesse no perfume ${p.name}.` : `Olá!`;
         window.open(`https://wa.me/${settings.store_whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
       };
 
       return (
-        <div className="min-h-screen flex flex-col">
-          {/* HEADER */}
-          <header className="sticky top-0 z-50 glass h-20 flex items-center justify-between px-6 md:px-12">
-            <h1 className="text-2xl font-serif font-bold text-stone-900 cursor-pointer" onClick={() => setView("home")}>{settings.store_name}</h1>
+        <div className="min-h-screen flex flex-col bg-[#fdfcfb]">
+          {/* TOPO DO SITE */}
+          <header className="h-20 bg-white/80 backdrop-blur-md border-b flex items-center justify-between px-6 sticky top-0 z-50">
+            <h1 className="text-2xl font-serif font-bold text-black cursor-pointer" onClick={() => setView("home")}>
+              {settings.store_name}
+            </h1>
             <nav className="flex items-center gap-6">
-              <button onClick={() => setView("home")} className="text-sm font-medium hover:text-stone-500">Início</button>
-              <a href="#catalogo" className="text-sm font-medium hover:text-stone-500">Catálogo</a>
-              <button onClick={() => setView("admin")} className="text-stone-300 hover:text-stone-900"><Lock size={18}/></button>
+              <button onClick={() => setView("home")} className="text-sm font-bold">Início</button>
+              <button onClick={() => setView("admin")} className="flex items-center gap-1 text-sm bg-black text-white px-3 py-1 rounded-md">
+                <Lock size={14}/> Admin
+              </button>
             </nav>
           </header>
 
-          <main className="flex-grow">
+          <main>
             {view === "home" ? (
               <>
-                {/* HERO */}
-                <section className="relative h-[70vh] flex items-center justify-center text-center px-4">
+                {/* BANNER PRINCIPAL */}
+                <section className="relative h-[60vh] flex items-center justify-center text-center">
                   <img src={settings.store_hero} className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="relative z-10 bg-white/40 backdrop-blur-md p-8 md:p-16 rounded-3xl border border-white/30 shadow-2xl max-w-3xl">
-                    <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">{settings.hero_title}</h2>
-                    <p className="text-lg text-stone-800 mb-8">{settings.hero_subtitle}</p>
-                    <a href="#catalogo" className="bg-stone-900 text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 hover:bg-stone-800 transition-all">
-                      Ver Catálogo <ChevronRight size={18}/>
-                    </a>
+                  <div className="relative z-10 bg-white/60 backdrop-blur-lg p-10 rounded-3xl border border-white shadow-2xl max-w-2xl mx-4">
+                    <h2 className="text-4xl md:text-6xl font-serif text-black mb-4">{settings.hero_title}</h2>
+                    <p className="text-stone-700 mb-8">{settings.hero_subtitle}</p>
+                    <a href="#catalogo" className="bg-black text-white px-8 py-3 rounded-full font-bold">Ver Catálogo</a>
                   </div>
                 </section>
 
-                {/* CATALOGO */}
-                <section id="catalogo" className="py-20 px-6 max-w-7xl mx-auto">
-                  <h3 className="text-3xl font-serif text-center mb-16 text-stone-900">Nossa Coleção</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {/* PRODUTOS */}
+                <section id="catalogo" className="py-20 px-6 max-w-6xl mx-auto">
+                  <h3 className="text-3xl font-serif text-center mb-12">Nossa Coleção</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {products.map(p => (
-                      <div key={p.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-xl transition-all group">
-                        <div className="aspect-square overflow-hidden">
-                          <img src={p.image_url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                        <div className="p-6">
-                          <h4 className="text-2xl font-serif mb-2">{p.name}</h4>
-                          <p className="text-stone-500 text-sm mb-4">{p.description}</p>
-                          <p className="text-xl font-bold mb-6 text-stone-900">{p.price}</p>
-                          <button onClick={() => handleWhatsApp(p)} className="w-full bg-stone-900 text-white py-4 rounded-xl flex items-center justify-center gap-3 font-bold hover:bg-stone-800">
-                            <MessageCircle size={20} className="text-green-400"/> Consultar via WhatsApp
+                      <div key={p.id} className="bg-white rounded-2xl overflow-hidden border shadow-sm">
+                        <img src={p.img} className="w-full aspect-square object-cover" />
+                        <div className="p-6 text-center">
+                          <h4 className="text-xl font-bold mb-2">{p.name}</h4>
+                          <p className="text-stone-500 text-sm mb-4">{p.desc}</p>
+                          <p className="text-xl font-bold text-black mb-6">{p.price}</p>
+                          <button onClick={() => handleWhatsApp(p)} className="w-full bg-[#25D366] text-white py-3 rounded-xl flex items-center justify-center gap-2 font-bold hover:opacity-90">
+                            <MessageCircle size={20}/> Consultar via WhatsApp
                           </button>
                         </div>
                       </div>
@@ -106,26 +108,21 @@
                 </section>
               </>
             ) : (
-              /* LOGIN ADMIN SIMPLIFICADO PARA O TESTE */
-              <div className="min-h-[60vh] flex items-center justify-center">
-                <div className="bg-white p-8 rounded-3xl shadow-xl border border-stone-100 w-full max-w-md text-center">
-                  <Settings size={48} className="mx-auto mb-6 text-stone-300"/>
-                  <h2 className="text-2xl font-serif mb-4">Acesso Administrativo</h2>
-                  <p className="text-stone-500 mb-6">Para editar fotos e preços, o banco de dados deve estar ativo na Cloudflare Workers.</p>
-                  <button onClick={() => setView("home")} className="text-stone-900 font-bold underline">Voltar para a loja</button>
-                </div>
+              /* TELA DE ADMIN PARA TESTE */
+              <div className="py-20 text-center">
+                <Settings size={48} className="mx-auto mb-4 text-stone-300"/>
+                <h2 className="text-3xl font-serif mb-4">Painel de Controle</h2>
+                <p className="text-stone-500 mb-8">O banco de dados precisa estar configurado na Cloudflare para salvar.</p>
+                <button onClick={() => setView("home")} className="bg-black text-white px-6 py-2 rounded-full">Voltar para a Loja</button>
               </div>
             )}
           </main>
 
-          {/* FOOTER */}
-          <footer className="bg-stone-900 text-white py-12 px-6 text-center">
-            <h4 className="text-xl font-serif mb-4">{settings.store_name}</h4>
-            <div className="flex flex-col items-center gap-2 text-stone-400 text-sm mb-8">
-              <span className="flex items-center gap-2"><MapPin size={14}/> {settings.store_address}</span>
-              <span className="flex items-center gap-2"><Phone size={14}/> {settings.store_whatsapp}</span>
-            </div>
-            <button onClick={() => setView("admin")} className="text-stone-600 text-xs hover:text-white transition-colors">Acesso Restrito</button>
+          {/* RODAPÉ */}
+          <footer className="bg-white border-t py-10 text-center px-6 mt-10">
+            <p className="font-bold text-black mb-2">{settings.store_name}</p>
+            <p className="text-sm text-stone-500 mb-6">{settings.store_address}</p>
+            <button onClick={() => setView("admin")} className="text-stone-300 text-xs">Área Restrita</button>
           </footer>
         </div>
       );
