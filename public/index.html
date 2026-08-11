@@ -31,40 +31,57 @@
         store_name: "Essence Perfumaria",
         store_whatsapp: "5531996831731",
         hero_title: "A essência da sua personalidade",
+        hero_subtitle: "Descubra fragrâncias exclusivas que capturam momentos.",
         store_hero: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1600"
       };
+
+      const products = [
+        { id: '1', name: 'Blue Velvet', price: 'R$ 380,00', img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500' },
+        { id: '2', name: 'Rose d\'Or', price: 'R$ 420,00', img: 'https://images.unsplash.com/photo-1585120040315-2241b774ad0f?w=500' }
+      ];
 
       return (
         <div className="min-h-screen flex flex-col font-sans">
           <header className="h-20 bg-white border-b flex items-center justify-between px-8 sticky top-0 z-50">
-            <h1 className="text-2xl font-bold text-stone-900">{settings.store_name}</h1>
+            <h1 className="text-2xl font-bold text-stone-900" onClick={() => setView("home")}>{settings.store_name}</h1>
             <div className="flex gap-4">
               <button onClick={() => setView("home")} className="font-medium">Início</button>
               <button onClick={() => setView("admin")} className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
-                <Lucide.Lock size={14}/> Admin
+                <Lucide.Lock size={14}/> Painel Admin
               </button>
             </div>
           </header>
 
           <main className="flex-grow">
             {view === "home" ? (
-              <div className="text-center">
-                <div className="h-[50vh] relative flex items-center justify-center">
+              <>
+                <section className="relative h-[60vh] flex items-center justify-center text-center">
                   <img src={settings.store_hero} className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="relative z-10 bg-white/80 p-8 rounded-2xl shadow-xl">
-                    <h2 className="text-4xl font-bold mb-4">{settings.hero_title}</h2>
-                    <a href="https://wa.me/5531996831731" className="bg-green-500 text-white px-8 py-3 rounded-full font-bold">Falar no WhatsApp</a>
+                  <div className="relative z-10 bg-white/70 backdrop-blur-md p-10 rounded-2xl shadow-2xl max-w-2xl mx-4">
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4">{settings.hero_title}</h2>
+                    <p className="text-stone-600 mb-8">{settings.hero_subtitle}</p>
+                    <a href="#catalogo" className="bg-black text-white px-8 py-3 rounded-full font-bold">Ver Catálogo</a>
                   </div>
-                </div>
-                <div className="py-20">
-                   <p className="text-stone-400">O catálogo aparecerá aqui após o primeiro deploy com sucesso.</p>
-                </div>
-              </div>
+                </section>
+
+                <section id="catalogo" className="py-20 px-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+                  {products.map(p => (
+                    <div key={p.id} className="bg-white rounded-2xl overflow-hidden border shadow-sm p-4 text-center">
+                      <img src={p.img} className="w-full aspect-square object-cover rounded-xl mb-4" />
+                      <h4 className="text-xl font-bold">{p.name}</h4>
+                      <p className="text-xl font-bold text-black my-4">{p.price}</p>
+                      <a href={`https://wa.me/${settings.store_whatsapp}`} target="_blank" className="bg-[#25D366] text-white py-3 rounded-xl flex items-center justify-center gap-2 font-bold">
+                        <Lucide.MessageCircle size={20}/> Consultar via WhatsApp
+                      </a>
+                    </div>
+                  ))}
+                </section>
+              </>
             ) : (
               <div className="py-20 text-center">
                 <h2 className="text-2xl font-bold mb-4">Painel Administrativo</h2>
-                <p className="mb-8">O site precisa estar online (Success) para acessar o painel completo.</p>
-                <button onClick={() => setView("home")} className="underline">Voltar</button>
+                <p className="mb-8">Banco de dados sendo ativado na Cloudflare...</p>
+                <button onClick={() => setView("home")} className="underline">Voltar para Loja</button>
               </div>
             )}
           </main>
