@@ -1,14 +1,6 @@
-name = "loja-essence"
-main = "src/index.ts"
-compatibility_date = "2025-04-01"
+name = "loja-perfumes"
+compatibility_date = "2024-05-02"
 
 [assets]
 directory = "./public"
-
-[[durable_objects.bindings]]
-name = "APP"
-class_name = "App"
-
-[[migrations]]
-tag = "v1"
-new_classes = ["App"]
+binding = "ASSETS"
